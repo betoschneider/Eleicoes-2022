@@ -19,9 +19,10 @@ link_resultado = 'https://resultados.tse.jus.br/oficial/ele2022/544/dados-simpli
 #2o turno
 link_resultado = 'https://resultados.tse.jus.br/oficial/ele2022/545/dados-simplificados/br/br-c0001-e000545-r.json'
 
-base =  pd.read_json(link_resultado)
+
 
 while True:
+    base =  pd.read_json(link_resultado)
     for i in base['cand']:
         #cria dataframe com a fotografia atual da apuração
         temp = pd.DataFrame([i])
@@ -31,6 +32,7 @@ while True:
             hora = '%s %s' % (base['dt'].max(), base['ht'].max())
             hora = pd.to_datetime(hora, format='%d/%m/%Y %H:%M:%S')
         except:
+            print('não foi possível obter data e hora')
             hora = datetime.now()
         
         #cria coluna com data e hora
@@ -55,7 +57,8 @@ while True:
     #imprime na tela
     print(link_resultado)
     #imprime ultima fotografia
-    print(df_candidatos[['n', 'nm', 'pvap', 'vap', 'dt_hr_atualiza']][(df_candidatos['dt_hr_atualiza'] == hora)])
+    #print(df_candidatos[['n', 'nm', 'pvap', 'vap', 'dt_hr_atualiza']][(df_candidatos['dt_hr_atualiza'] == hora)])
+    print(df_candidatos[['n', 'nm', 'pvap', 'vap', 'dt_hr_atualiza']].tail(2))
     
     #aguarda tempo em segundos para a próxima consulta
     time.sleep(60)
